@@ -11,10 +11,15 @@ parser.add_argument('--model', choices=['resnet18', 'resnet34', 'resnet50'], def
 parser.add_argument('--image_size', type=int, choices=[112, 224, 336, 448, 560, 672, 784, 896, 1008, 1120], default=112)
 parser.add_argument('--num_class', type=int, default=2, help='Output class of the model')
 parser.add_argument('--ai_hub_device',
-                    choices=['Dragonwing IQ-9075 EVK', 'Google Pixel 10 Pro XL','QCS8550 (Proxy)','Samsung Galaxy S24 (Family)','Samsung Galaxy S24 Ultra'],
+                    choices=[
+                        'Dragonwing IQ-9075 EVK', 'Google Pixel 10 Pro XL','QCS8550 (Proxy)',
+                        'Samsung Galaxy S24 (Family)','Samsung Galaxy S24 Ultra',
+                        'Google Pixel 3', 'Google Pixel 6'
+                    ],
                     default='Samsung Galaxy S24 (Family)',
                     help='Device to run on ai hub')
-parser.add_argument("--wandb_project", default="different_device_bench")
+
+parser.add_argument("--wandb_project", default="res18_bench_all")
 parser.add_argument("--wandb_mode", default="online", choices=["online", "offline", "disabled"])
 args, _ = parser.parse_known_args()
 
