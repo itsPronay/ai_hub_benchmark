@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# This runs all the benchmark, 
+# chmod +x run_all_benchmark.sh  - this gives permission
+# ./run_all_benchmark.sh -runs this file
+
 MODELS=(
     "resnet18" 
     "resnet34" 

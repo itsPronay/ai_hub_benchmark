@@ -14,7 +14,7 @@ parser.add_argument('--ai_hub_device',
                     choices=['Dragonwing IQ-9075 EVK', 'Google Pixel 10 Pro XL','QCS8550 (Proxy)','Samsung Galaxy S24 (Family)','Samsung Galaxy S24 Ultra'],
                     default='Samsung Galaxy S24 (Family)',
                     help='Device to run on ai hub')
-parser.add_argument("--wandb_project", default="resnet")
+parser.add_argument("--wandb_project", default="different_device_bench")
 parser.add_argument("--wandb_mode", default="online", choices=["online", "offline", "disabled"])
 args, _ = parser.parse_known_args()
 
@@ -28,7 +28,7 @@ def main():
     if args.wandb_mode != 'disabled':
         wandb.init(
             project = args.wandb_project,
-            name = args.ai_hub_device + "_" + str(args.image_size),
+            name = args.ai_hub_device + "_" + args.model + "_" + str(args.image_size),
             mode = args.wandb_mode,
             config = vars(args)
         )
