@@ -18,6 +18,7 @@ def extract_metrics_from_profile(profile: dict):
     warm_load  = exec_sum.get("warm_load_time", 0)
 
     metrics = {
+        "estimated_inference_time_ms": round(us_to_ms(exec_sum.get("estimated_inference_time", 0)), 4),
         "mean_latency_ms":    round(us_to_ms(times.mean()), 4)             if len(times) else None,
         "p50_latency_ms":     round(us_to_ms(np.percentile(times, 50)), 4) if len(times) else None,
         "p95_latency_ms":     round(us_to_ms(np.percentile(times, 95)), 4) if len(times) else None,
@@ -38,7 +39,7 @@ def extract_metrics_from_profile(profile: dict):
     warm_mem = exec_sum.get("warm_load_peak_memory", 0)
 
     metrics.update({
-        "inference_peak_mb":              round(bytes_to_mb(inf_mem), 4),
+        "estimated_inference_peak_memory": round(bytes_to_mb(inf_mem), 4),
         "cold_start_peak_mb":             round(bytes_to_mb(cold_mem), 4),
         "warm_start_peak_mb":             round(bytes_to_mb(warm_mem), 4),
         "memory_reduction_cold_warm_pct": round((1 - warm_mem / cold_mem) * 100, 4) if cold_mem else None,
@@ -83,7 +84,6 @@ def extract_metrics_from_profile(profile: dict):
 
     return {k: v for k, v in metrics.items() if v is not None}
 
-
 def log_op_type_table(profile: dict):
     """Log op type distribution as a wandb Table. Call after wandb.init()."""
     exec_detail = profile.get("execution_detail", [])
@@ -108,7 +108,7 @@ def log_op_type_table(profile: dict):
             round(type_times[op_type] / total_time * 100, 4) if total_time else 0.0,
         )
 
-    wandb.log({"op_type_distribution": table})
+    return table
 
 def log_top15_table(profile: dict):
     """Log top 15 bottleneck ops as a wandb Table. Call after wandb.init()."""
@@ -132,18 +132,4 @@ def log_top15_table(profile: dict):
             round(op_time / total_time * 100, 4) if total_time else 0.0,
         )
 
-    wandb.log({"top15_bottlenecks": table})
-
-
-def main():
-    with open("job_result/ResNet_profiling_jp2me0v65_results.json", "r") as f:
-        profile = json.load(f)
-
-    metrices = extract_metrics_from_profile(profile)
-
-    for key, value in metrices.items():
-        print(f"{key:<45} {value}")
-
-
-if __name__ == "__main__":
-    main()
+    return table

@@ -16,8 +16,6 @@ parser.add_argument('--ai_hub_device',
                     help='Device to run on ai hub')
 parser.add_argument("--wandb_project", default="resnet")
 parser.add_argument("--wandb_mode", default="online", choices=["online", "offline", "disabled"])
-parser.add_argument("--log_top_15_op", type=bool, default=True)
-parser.add_argument("--log_op_type_table", type=bool, default=True)
 args, _ = parser.parse_known_args()
 
 def main():
@@ -53,10 +51,13 @@ def main():
 
     if args.wandb_mode != 'disabled':
         wandb.log(metrices)
-        if args.log_top_15_op == True:
-            log_top15_table(profile)
-        if args.log_op_type_table == True:
-            log_op_type_table(profile)
+
+        op_type_table = log_op_type_table(profile)
+        top15_table = log_top15_table(profile)
+
+        wandb.log({"log_op_type_table": op_type_table})
+        wandb.log({"log_top15_table": top15_table})
+
         wandb.finish()
 
 if __name__ == '__main__':
