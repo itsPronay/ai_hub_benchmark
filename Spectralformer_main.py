@@ -7,9 +7,9 @@ from spectralFormer.vit import ViT
 import wandb
 import os
 
-parser = argparse.ArgumentParser(description='Spectralformer-benchmark')
-parser.add_argument('--patches', type=int, default=5)
-parser.add_argument('--band_patches', type=int, default=1)
+parser = argparse.ArgumentParser(description='Spectralformer-benchmark-f')
+parser.add_argument('--patches', type=int, default=7)
+parser.add_argument('--band_patches', choices=[1, 3, 5, 7, 9, 11], type=int, default=1)
 parser.add_argument('--mode', choices=['CAF', 'ViT'], default='ViT')
 parser.add_argument('--num_classes', type=int, default=9, help='Output class of the model')
 parser.add_argument('--band', type=int, default=100)
@@ -54,7 +54,12 @@ def main():
     if args.wandb_mode != 'disabled':
         wandb.init(
             project = args.wandb_project,
-            name = args.ai_hub_device + "_" + str(args.band) + "_" + str(patchDim(args.patches, args.band_patches)),
+            name = "{0}_{1}_{2}_{3}".format(
+                args.ai_hub_device, 
+                args.mode,
+                args.band,
+                patchDim(args.patches, args.band_patches)
+            ),
             mode = args.wandb_mode,
             config = vars(args)
         )
