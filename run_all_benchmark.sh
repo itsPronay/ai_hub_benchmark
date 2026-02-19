@@ -6,8 +6,8 @@ set -e
 # ./run_all_benchmark.sh -runs this file
 
 MODELS=(
-    "resnet18" 
-    # "resnet34" 
+    # "resnet18" 
+    "resnet34" 
     # "resnet50"
 )
 
@@ -25,9 +25,9 @@ IMAGE_SIZES=(
 )
 
 DEVICES=(
-  "Dragonwing IQ-9075 EVK"
+  # "Dragonwing IQ-9075 EVK"
   # "QCS8550 (Proxy)"
-  "Google Pixel 10 Pro XL"
+  # "Google Pixel 10 Pro XL"
   "Samsung Galaxy S24 (Family)"
   "Google Pixel 3"
   "Google Pixel 6"
