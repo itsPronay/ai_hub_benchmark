@@ -3,3 +3,4 @@ utils/__pycache__/
 wandb/
 spectralFormer/__pycache__/
 SpectralFormer result/
+.vscode/
